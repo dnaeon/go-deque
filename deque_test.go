@@ -119,3 +119,31 @@ func TestPopBack(t *testing.T) {
 		i++
 	}
 }
+
+func TestEmpty(t *testing.T) {
+	deque := deque.New[int]()
+
+	got, err := deque.PopBack()
+
+	if err == nil || got != 0 {
+		t.Fatal("expected error, but got nil")
+	}
+
+	got, err = deque.PopFront()
+
+	if err == nil || got != 0 {
+		t.Fatal("expected error, but got nil")
+	}
+
+	got, err = deque.PeekBack()
+
+	if err == nil || got != 0 {
+		t.Fatal("expected error, but got nil")
+	}
+
+	got, err = deque.PeekFront()
+
+	if err == nil || got != 0 {
+		t.Fatal("expected error, but got nil")
+	}
+}
