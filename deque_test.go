@@ -25,6 +25,7 @@
 package deque_test
 
 import (
+	"fmt"
 	"testing"
 
 	"gopkg.in/dnaeon/go-deque.v1"
@@ -145,5 +146,36 @@ func TestEmpty(t *testing.T) {
 
 	if err == nil || got != 0 {
 		t.Fatal("expected error, but got nil")
+	}
+}
+
+func TestRotate(t *testing.T) {
+	d := deque.New[int]()
+
+	// Deque is: []int{1, 2, 3, 4, 5}
+	for i := range 5 {
+		d.PushBack(i + 1)
+	}
+
+	testCases := []struct {
+		n    int
+		want []int
+	}{
+		{n: 1, want: []int{2, 3, 4, 5, 1}},
+		{n: -1, want: []int{1, 2, 3, 4, 5}},
+		{n: 3, want: []int{3, 4, 5, 1, 2}},
+		{n: -2, want: []int{5, 1, 2, 3, 4}},
+	}
+
+	if d.IsEmpty() {
+		t.Fatal("deque should not be empty")
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("rotate with %d positions", tc.n), func(t *testing.T) {
+			if err := d.Rotate(tc.n); err != nil {
+				t.Error(err)
+			}
+		})
 	}
 }
